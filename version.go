@@ -34,6 +34,6 @@ func (v *Version) String() string {
 
 type versions []*Version
 
-func (vs versions) len() int           { return len(vs) }
-func (vs versions) swap(i, j int)      { vs[i], vs[j] = vs[j], vs[i] }
+func (vs versions) Len() int           { return len(vs) }
+func (vs versions) Swap(i, j int)      { vs[i], vs[j] = vs[j], vs[i] }
 func (vs versions) Less(i, j int) bool { return vs[i].date.Before(vs[j].date) }
