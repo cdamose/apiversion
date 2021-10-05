@@ -20,7 +20,7 @@ type Change struct {
 	Actions     map[string]Action
 }
 
-type version struct {
+type Version struct {
 	Date       string
 	Changes    []*Change
 	Deprecated bool
@@ -28,11 +28,11 @@ type version struct {
 	layout     string
 }
 
-func (v *version) String() string {
+func (v *Version) String() string {
 	return v.date.Format(v.layout)
 }
 
-type versions []*version
+type versions []*Version
 
 func (vs versions) len() int           { return len(vs) }
 func (vs versions) swap(i, j int)      { vs[i], vs[j] = vs[j], vs[i] }
