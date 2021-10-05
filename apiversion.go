@@ -3,6 +3,7 @@ package apiversion
 import (
 	"errors"
 	"net/http"
+	"reflect"
 	"sort"
 	"time"
 )
@@ -117,4 +118,24 @@ func (vm *VersionManager) Parse(r *http.Request) (*Version, error) {
 		return nil, ErrVersionDeprecated
 	}
 	return v, nil
+}
+
+func (vm *VersionManager) Apply(version *Version, obj Versionable) (map[string]interface{}, error) {
+	data := obj.Data()
+	for _, ver := range vm.versions {
+		if version.date.After(ver.date) || version.date.Equal(ver.date) {
+			break
+		}
+		for _, c := range ver.Changes {
+			typ := reflect.TypeOf(obj).Elem().Name()
+
+			// If there is an action for this obj type
+			// execute the action.
+			a, ok := c.Actions[typ]
+			if ok {
+				data = a(data)
+			}
+		}
+	}
+	return data, nil
 }
